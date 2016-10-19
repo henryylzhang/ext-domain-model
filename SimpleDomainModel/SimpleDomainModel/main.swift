@@ -24,80 +24,18 @@ open class TestMe {
 // Money
 //
 public struct Money {
-    public var amount : Double
+    public var amount : Int
     public var currency : String
-    let USDToGBP = 0.5
-    let USDToEUR = 1.5
-    let USDToCAN = 1.25
-    let GBPToEUR = 3.0
-    let GBPToCAN = 2.5
-    let EURToCAN: Double = (5/6)
     
     let typeArray = ["USD", "GBP", "EUR", "CAN"]
+    let conversionRate = ["CAN": 1.25, "EUR": 1.5, "GBP": 0.5, "USD": 1]
     
     public mutating func convert(_ to: String) -> Money {
         if (!typeArray.contains(to)) {
-            print("Invalid currency type")
-        }
-        else {
-            if currency == "USD" { /*assuming no-one wants to convert USD to USD*/
-                switch to {
-                case "GBP":
-                    self.amount *= USDToGBP
-                    return Money(amount: self.amount, currency: "GBP")
-                case "EUR":
-                    self.amount *= USDToEUR
-                    return Money(amount: self.amount, currency: "EUR")
-                case "CAN":
-                    self.amount *= USDToCAN
-                    return Money(amount: self.amount, currency: "CAN")
-                default:
-                    break
-                }
-            } else if currency == "GBP" {
-                switch to {
-                case "USD":
-                    self.amount /= USDToGBP
-                    return Money(amount: self.amount, currency: "USD")
-                case "EUR":
-                    self.amount *= GBPToEUR
-                    return Money(amount: self.amount, currency: "EUR")
-                case "CAN":
-                    self.amount *= GBPToCAN
-                    return Money(amount: self.amount, currency: "CAN")
-                default:
-                    break
-                }
-
-            } else if currency == "EUR" {
-                switch to {
-                case "USD":
-                    self.amount /= USDToEUR
-                    return Money(amount: self.amount, currency: "USD")
-                case "CAN":
-                    self.amount *= EURToCAN
-                    return Money(amount: self.amount, currency: "CAN")
-                case "GBP":
-                    self.amount /= GBPToEUR
-                    return Money(amount: self.amount, currency: "GBP")
-                default:
-                    break
-                }
-            } else if currency == "CAN" {
-                switch to {
-                case "USD":
-                    self.amount /= USDToCAN
-                    return Money(amount: self.amount, currency: "GBP")
-                case "EUR":
-                    self.amount /= EURToCAN
-                    return Money(amount: self.amount, currency: "EUR")
-                case "GBP":
-                    self.amount /= GBPToCAN
-                    return Money(amount: self.amount, currency: "CAN")
-                default:
-                    break
-                }
-            }
+            print("invalid money type")
+        } else {
+            self.amount = self.amount / conversionRate[self.currency]
+            return Money(self.amount * conversionRate[to.currency], to.currency)
         }
         return self
     }
