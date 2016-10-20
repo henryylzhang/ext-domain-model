@@ -148,34 +148,48 @@ open class Person {
     }
 }
 
-//////////////////////////////////////
-//// Family
-////
-//open class Family {
-//    fileprivate var members : [Person] = []
-//    
-//    public init(spouse1: Person, spouse2: Person) {
-//        if spouse1.spouse == nil && spouse2.spouse == nil {
-//            spouse1.spouse = spouse2
-//            spouse2.spouse = spouse1
-//            members.append(spouse1)
-//            members.append(spouse2)
-//        }
-//    }
-//    
-//    open func haveChild(_ child: Person) -> Bool {
-//        
-//            member.append(child)
-//        }
-//    }
-//    
-//    open func householdIncome() -> Int {
-//        var total: Int = 0 //should probably store somewhere
-//        for member in members {
-//            if member.job != nil {
-//                total += member.job.amount
-//            }
-//        }
-//        return total
-//    }
-//}
+////////////////////////////////////
+// Family
+//
+open class Family {
+    fileprivate var members : [Person] = []
+    
+    public init(spouse1: Person, spouse2: Person) {
+        if spouse1.spouse == nil && spouse2.spouse == nil {
+            spouse1.spouse = spouse2
+            spouse2.spouse = spouse1
+            members.append(spouse1)
+            members.append(spouse2)
+        }
+    }
+    
+    open func haveChild(_ child: Person) -> Bool {
+        var ageChecker: Bool = false
+        for member in members {
+            if member.age >= 21 {
+                ageChecker = true
+            }
+        }
+        if ageChecker {
+            members.append(child)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    open func householdIncome() -> Int {
+        var total: Int = 0 //should probably store somewhere
+        for member in members {
+            if let job = member.job?.type { //if let means only if this isn't nil
+                switch job {
+                case .Hourly(let rate):
+                    total += Int(Double(2000) * rate)
+                case .Salary(let rate):
+                    total += rate
+                }
+            }
+        }
+        return total
+    }
+}
