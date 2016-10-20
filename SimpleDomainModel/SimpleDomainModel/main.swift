@@ -30,30 +30,33 @@ public struct Money {
     let typeArray = ["USD", "GBP", "EUR", "CAN"]
     let conversionRate = ["CAN": 1.25, "EUR": 1.5, "GBP": 0.5, "USD": 1]
     
-    public mutating func convert(_ to: String) -> Money {
+    public func convert(_ to: String) -> Money {
+        var amount = self.amount
         if (!typeArray.contains(to)) {
             print("invalid money type")
         } else {
-            self.amount = self.amount / conversionRate[self.currency]
-            return Money(self.amount * conversionRate[to.currency], to.currency)
+            amount = Int(Double(self.amount) / conversionRate[self.currency]!)
+            return Money(amount: Int(Double(amount) * conversionRate[to]!), currency: to)
         }
         return self
     }
 
-    mutating func add(_ to: Money) -> Money {
+    func add(_ to: Money) -> Money {
+        var localSelf = Money(amount: self.amount, currency: self.currency)
         let localTo = to
         if self.currency != localTo.currency {
-            self = self.convert(localTo.currency)
+            localSelf = localSelf.convert(localTo.currency)
         }
-        return Money(amount: self.amount + localTo.amount, currency: localTo.currency)
+        return Money(amount: localSelf.amount + localTo.amount, currency: localTo.currency)
     }
         
-    mutating func subtract(_ from: Money) -> Money {
+    func subtract(_ from: Money) -> Money {
+        var localSelf = Money(amount: self.amount, currency: self.currency)
         let localfrom = from
         if self.currency != localfrom.currency {
-            self = self.convert(localfrom.currency)
+            localSelf = localSelf.convert(localfrom.currency)
         }
-        return Money(amount: localfrom.amount - self.amount, currency: localfrom.currency)
+        return Money(amount: localfrom.amount - localSelf.amount, currency: localfrom.currency)
     }
 }
 
@@ -64,36 +67,36 @@ public struct Money {
 //    case USD
 //}
 
-//////////////////////////////////////
-//// Job
-////
-//open class Job {
-//    fileprivate var title : String
-//    fileprivate var type : JobType
-//    
-//    public enum JobType {
-//        case Hourly(Double)
-//        case Salary(Int)
-//    }
-//    
-//    public init(title : String, type : JobType) {
-//        self.title = title
-//        self.type = type
-//    }
-//    
-//    /*open func calculateIncome(_ hours: Int) -> Int {
-//        if(self.type =) {
-//            
-//            } else {
-//            return type;
-//            }
-//        }
-//    
-//    open func raise(_ amt : Double) {
-// 
-//    }*/
-//}
+////////////////////////////////////
+// Job
 //
+open class Job {
+    fileprivate var title : String
+    fileprivate var type : JobType
+    
+    public enum JobType {
+        case Hourly(Double)
+        case Salary(Int)
+    }
+    
+    public init(title : String, type : JobType) {
+        self.title = title
+        self.type = type
+    }
+    
+    /*open func calculateIncome(_ hours: Int) -> Int {
+        if(self.type =) {
+            
+            } else {
+            return type;
+            }
+        }
+    
+    open func raise(_ amt : Double) {
+ 
+    }*/
+}
+
 //////////////////////////////////////
 //// Person
 ////

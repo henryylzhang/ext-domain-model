@@ -70,6 +70,7 @@ class MoneyTests: XCTestCase {
   }
   func testUSDtoGBPtoUSD() {
     let gbp = tenUSD.convert("GBP")
+    print(tenUSD.convert("GBP").amount)
     let usd = gbp.convert("USD")
     XCTAssert(tenUSD.amount == usd.amount)
     XCTAssert(tenUSD.currency == usd.currency)
