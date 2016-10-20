@@ -84,51 +84,59 @@ open class Job {
         self.type = type
     }
     
-    /*open func calculateIncome(_ hours: Int) -> Int {
-        if(self.type =) {
-            
-            } else {
-            return type;
-            }
+    open func calculateIncome(_ hours: Int) -> Int {
+        let job = self.type
+        switch job {
+        case .Hourly(let rate):
+            return Int(Double(hours) * rate)
+        case .Salary(let rate):
+            return rate
         }
+    }
     
     open func raise(_ amt : Double) {
- 
-    }*/
+        let job = self.type
+        switch job {
+        case .Hourly(let rate):
+            self.type = Job.JobType.Hourly(rate + amt)
+        case .Salary(let rate):
+            self.type = Job.JobType.Salary(rate + rate)
+        }
+    }
 }
 
-//////////////////////////////////////
-//// Person
-////
-//open class Person {
-//    open var firstName : String = ""
-//    open var lastName : String = ""
-//    open var age : Int = 0
-//    
-//    fileprivate var _job : Job? = nil
-//    open var job : Job? {
-//        get { }
-//        set(value) {
-//        }
-//    }
-//    
-//    fileprivate var _spouse : Person? = nil
-//    open var spouse : Person? {
-//        get { }
-//        set(value) {
-//        }
-//    }
-//    
-//    public init(firstName : String, lastName: String, age : Int) {
-//        self.firstName = firstName
-//        self.lastName = lastName
-//        self.age = age
-//    }
-//    
-//    open func toString() -> String {
-//    }
-//}
+////////////////////////////////////
+// Person
 //
+open class Person {
+    open var firstName : String = ""
+    open var lastName : String = ""
+    open var age : Int = 0
+    
+    fileprivate var _job : Job? = nil
+    open var job : Job? {
+        get { }
+        set(value) {
+        }
+    }
+    
+    fileprivate var _spouse : Person? = nil
+    open var spouse : Person? {
+        get { }
+        set(value) {
+        }
+    }
+    
+    public init(firstName : String, lastName: String, age : Int) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+    }
+    
+    open func toString() -> String {
+    }
+}
+
 //////////////////////////////////////
 //// Family
 ////
