@@ -20,10 +20,34 @@ open class TestMe {
     }
 }
 
+protocol CustomStringConvertible {
+    var description: String { get }
+}
+
+protocol Mathematics {
+    func add(Money1: Money, Money2: Money) -> Money
+    func subtract(Money1: Money, from: Money) -> Money
+}
+
+extension Double {
+    var CAN: Money {
+        return Money(amount: Int(self), currency: "CAN")
+    }
+    var EUR: Money {
+        return Money(amount: Int(self), currency: "EUR")
+    }
+    var GBP: Money {
+        return Money(amount: Int(self), currency: "GBP")
+    }
+    var USD: Money {
+        return Money(amount: Int(self), currency: "USD")
+    }
+}
+
 ////////////////////////////////////
 // Money
 //
-public struct Money {
+public struct Money: CustomStringConvertible {
     public var amount : Int
     public var currency : String
     
@@ -57,6 +81,10 @@ public struct Money {
             localSelf = localSelf.convert(localfrom.currency)
         }
         return Money(amount: localfrom.amount - localSelf.amount, currency: localfrom.currency)
+    }
+    
+    var description: String {
+            return "\(self.currency)\(Double(self.amount))"
     }
 }
 
@@ -100,7 +128,17 @@ open class Job {
         case .Hourly(let rate):
             self.type = Job.JobType.Hourly(rate + amt)
         case .Salary(let rate):
-            self.type = Job.JobType.Salary(rate + rate)
+            self.type = Job.JobType.Salary(rate + Int(amt))
+        }
+    }
+    
+    var description: String {
+        let job = self.type
+        switch job {
+        case .Hourly(let rate):
+            return "Job:\(self.title) Pay:\(rate) an hour"
+        case .Salary(let rate):
+            return "Job:\(self.title) Pay:\(rate) a year"
         }
     }
 }
@@ -146,6 +184,10 @@ open class Person {
     open func toString() -> String { //need to fix this to use get methods
         return "[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(job) spouse:\(spouse)]"
     }
+    
+    var description: String {
+        return self.toString()
+    }
 }
 
 ////////////////////////////////////
@@ -156,10 +198,12 @@ open class Family {
     
     public init(spouse1: Person, spouse2: Person) {
         if spouse1.spouse == nil && spouse2.spouse == nil {
-            spouse1.spouse = spouse2
-            spouse2.spouse = spouse1
-            members.append(spouse1)
-            members.append(spouse2)
+            if spouse1.age >= 21 || spouse2.age >= 21 {
+                spouse1.spouse = spouse2
+                spouse2.spouse = spouse1
+                members.append(spouse1)
+                members.append(spouse2)
+            }
         }
     }
     
@@ -190,6 +234,16 @@ open class Family {
                 }
             }
         }
+        print(members)
         return total
+    }
+    
+    var description: String {
+        var family: String = "["
+        for member in members {
+            family += "Person: \(member.firstName) "
+        }
+        family += "]"
+        return family
     }
 }
