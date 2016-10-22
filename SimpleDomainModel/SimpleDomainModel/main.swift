@@ -24,9 +24,10 @@ protocol CustomStringConvertible {
     var description: String { get }
 }
 
+
 protocol Mathematics {
-    func add(Money1: Money, Money2: Money) -> Money
-    func subtract(Money1: Money, from: Money) -> Money
+    static func +(money1: Self, to: Self) -> Self
+    static func -(money1: Self, from: Self) -> Self
 }
 
 extension Double {
@@ -47,7 +48,7 @@ extension Double {
 ////////////////////////////////////
 // Money
 //
-public struct Money: CustomStringConvertible {
+public struct Money: CustomStringConvertible, Mathematics {
     public var amount : Int
     public var currency : String
     
@@ -84,7 +85,15 @@ public struct Money: CustomStringConvertible {
     }
     
     var description: String {
-            return "\(self.currency)\(Double(self.amount))"
+            return "\(self.currency) \(Double(self.amount))"
+    }
+    
+    static func +(money1: Money, to: Money) -> Money {
+        return money1.add(to)
+    }
+    
+    static func -(money1: Money, from: Money) -> Money{
+        return money1.subtract(from)
     }
 }
 
@@ -241,7 +250,7 @@ open class Family {
     var description: String {
         var family: String = "["
         for member in members {
-            family += "Person: \(member.firstName) "
+            family += "Person: \(member.firstName) \(member.lastName) "
         }
         family += "]"
         return family

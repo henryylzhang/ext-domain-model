@@ -14,7 +14,7 @@ class CustomStringTests: XCTestCase {
     
     func testMoneyDescription() {
         let money = Money(amount: 100, currency: "GBP")
-        XCTAssert(money.description == "GBP100.0")
+        XCTAssert(money.description == "GBP 100.0")
     }
     
     func testJobDescription() {
@@ -42,22 +42,32 @@ class CustomStringTests: XCTestCase {
         let _ = family.haveChild(mike)
         let _ = family.haveChild(matt)
         
-        XCTAssert(family.description == "[Person: Ted Person: Charlotte Person: Mike Person: Matt]")
+        XCTAssert(family.description == "[Person: Ted Neward Person: Charlotte Neward Person: Mike Neward Person: Matt Neward ]")
     }
 }
 
 class MathematicsTests: XCTestCase {
+    let tenUSD = Money(amount: 10, currency: "USD")
+    let fifteenGBP = Money(amount: 15, currency: "GBP")
     
+    func testPlusMoney() {
+        let twenty = tenUSD + tenUSD
+        XCTAssert(twenty.description == "USD 20.0")
+    }
+    func testMinusMoney() {
+        let gbp = tenUSD + fifteenGBP
+        XCTAssert(gbp.description == "GBP 20.0")
+    }
 }
 
 class DoubleExtensionTests: XCTestCase {
     func testUSDDouble() {
         let usd = 22.USD
-        XCTAssert(usd.description == "USD22.0")
+        XCTAssert(usd.description == "USD 22.0")
     }
     
     func testGBPDouble() {
         let gbp = 3.GBP
-        XCTAssert(gbp.description == "GBP3.0")
+        XCTAssert(gbp.description == "GBP 3.0")
     }
 }
